@@ -24,6 +24,16 @@ const empList = [
 function Table() {
 
     const [data, setData] = useState(empList);
+
+
+    const handleRowUpdate = (newData, oldData, resolve) => {
+        //validation
+
+        console.log("Old Data", oldData);
+        console.log("New Data", newData);
+        resolve();
+
+    }
     const columns = [
         {
             title: "ID", field: "id", editable: false, filtering: false,
@@ -64,7 +74,7 @@ function Table() {
             title: "Exp. Edit Alert",
             field: "expEditAlert",
             lookup: {
-                0: '-',
+                0: 'Experince Edited',
                 1: 'mark verified'
             }
         },
@@ -91,6 +101,7 @@ function Table() {
         return copyData;
     }
 
+
     return (
         <MaterialTable
             data={data}
@@ -109,9 +120,7 @@ function Table() {
                 filtering: true,
             }
             }
-            icons={[
-                tableIcons
-            ]}
+            icons={[tableIcons]}
             editable={{
                 onBulkUpdate: (changes) => {
                     return new Promise((resolve, reject) => {
@@ -135,19 +144,9 @@ function Table() {
                 //     });
                 // },
                 onRowUpdate: (newData, oldData) => {
-                    console.log(newData)
-                    return new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            const dataUpdate = [...data];
-                            console.log(dataUpdate)
-                            // In dataUpdate, find target
-                            const target = dataUpdate.find((el) => el.id === oldData.tableData.id);
-                            const index = dataUpdate.indexOf(target);
-                            dataUpdate[index] = newData;
-                            setData([...dataUpdate]);
-                            resolve();
-                        }, 1000);
-                    });
+                    return new Promise((resolve) => {
+                        handleRowUpdate(newData, oldData, resolve);
+                    })
                 },
                 // onRowDelete: (oldData) => {
                 //     return new Promise((resolve, reject) => {
