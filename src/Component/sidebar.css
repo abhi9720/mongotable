@@ -1,0 +1,28 @@
+.sidenav {
+   
+   
+    z-index: 1;
+    
+    background: #eee;
+    overflow-x: hidden;
+    padding: 8px 0;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: inline-block;
+    background-color: #064579;
+    border-radius: 10px;
+    margin-left: 40px;
+  }
+  
+  .sidenav a:hover {
+    color:wheat;
+  }
