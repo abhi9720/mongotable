@@ -4,7 +4,7 @@ import MaterialTable from '@material-table/core';
 import Edit from '@material-ui/icons/Edit';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
-import { Link } from 'react-router-dom';
+import { Link } from '@material-ui/core';
 
 const empList = [
     { id: 1, name: "Neeraj", email: 'neeraj@gmail.com', phone: 9876543210, status: 'underVerification', expEditAlert: "1" },
@@ -30,8 +30,8 @@ function Table() {
             title: "Name", field: "name",
             render: rowData => {
 
-                return <Link target="_blank" to={'https://localhost:9000' + rowData.name}
-                    rel="noopener noreferrer"
+                return <Link target="_blank" href={'https://localhost:9000' + rowData.name}
+
                 >
                     {rowData.name}
                 </Link>
