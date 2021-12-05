@@ -6,6 +6,9 @@ import Edit from '@material-ui/icons/Edit';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import axiosInstance from '../util/axiosConfig'
 
+import { toast } from 'react-toastify';
+
+
 class SessionTable extends React.Component {
     state = {
         columns: [],
@@ -96,9 +99,30 @@ class SessionTable extends React.Component {
         this.componentDidMount()
     };
 
+    success = () => toast.success('Update successfully', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+
+    error = () => toast.error('Failed to update!', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
     render() {
         return (
             <>
+
+
                 <MaterialTable
                     data={this.state.fetchedData}
                     columns={this.state.columns}
@@ -142,11 +166,12 @@ class SessionTable extends React.Component {
                                 axiosInstance.post('/session/' + oldData._id, newData)
                                     .then(res => {
                                         this.setState({ fetchedData: dataUpdate })
-
+                                        this.success()
                                         resolve();
                                     })
                                     .catch(err => {
                                         console.log(err);
+                                        this.error();
                                         reject()
                                     })
                                     .finally(_ => {
@@ -154,11 +179,16 @@ class SessionTable extends React.Component {
                                     })
 
                             });
+
                         },
 
                     }}
                 />
+
+
+
             </>
+
         )
     };
 }

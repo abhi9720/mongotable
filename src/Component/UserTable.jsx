@@ -7,7 +7,7 @@ import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { Link } from '@material-ui/core';
 import axiosInstance from '../util/axiosConfig'
 
-
+import { toast } from 'react-toastify';
 
 
 
@@ -91,6 +91,27 @@ class UserTable extends React.Component {
         this.componentDidMount()
     };
 
+    success = () => toast.success('Update successfully', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+
+    error = () => toast.error('Failed to update!', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+
+
     render() {
         return (
             <>
@@ -137,11 +158,12 @@ class UserTable extends React.Component {
                                 axiosInstance.post('/user/' + oldData._id, newData)
                                     .then(res => {
                                         this.setState({ fetchedData: dataUpdate })
-
+                                        this.success()
                                         resolve();
                                     })
                                     .catch(err => {
                                         console.log(err);
+                                        this.error();
                                         reject()
                                     })
                                     .finally(_ => {

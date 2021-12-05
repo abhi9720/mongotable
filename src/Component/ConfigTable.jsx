@@ -5,7 +5,7 @@ import Edit from '@material-ui/icons/Edit';
 
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import axiosInstance from '../util/axiosConfig'
-
+import { toast } from 'react-toastify';
 class ConfigTable extends React.Component {
     state = {
         columns: [],
@@ -46,6 +46,26 @@ class ConfigTable extends React.Component {
     handleClick = () => {
         this.componentDidMount()
     };
+
+    success = () => toast.success('Update successfully', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+
+    error = () => toast.error('Failed to update!', {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
 
     render() {
         return (
@@ -91,15 +111,18 @@ class ConfigTable extends React.Component {
                                 axiosInstance.post(`/edit-env/${newData.key}/${newData.value}`)
                                     .then(res => {
                                         this.setState({ fetchedData: dataUpdate })
+                                        this.success()
                                         resolve();
                                     })
                                     .catch(err => {
                                         console.log(err);
+                                        this.error();
                                         reject()
                                     })
                                     .finally(_ => {
                                         this.handleClick()
                                     })
+
                             });
                         },
 
