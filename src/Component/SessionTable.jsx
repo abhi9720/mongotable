@@ -139,7 +139,7 @@ class SessionTable extends React.Component {
                                 dataUpdate[index] = newData;
                                 this.setState({ fetchedData: dataUpdate })
 
-                                axiosInstance.post('/user/' + oldData._id, newData)
+                                axiosInstance.post('/session/' + oldData._id, newData)
                                     .then(res => {
                                         this.setState({ fetchedData: dataUpdate })
 
