@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from './Component/Sidebar';
 
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Manageuser from './Pages/ManageUser';
 import ManageSession from './Pages/ManageSession';
 import ManageConfigurations from './Pages/ManageConfigurations';
