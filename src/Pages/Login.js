@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import axiosInstance from '../util/axiosConfig';
@@ -41,7 +41,7 @@ async function loginUser(credentials) {
 export default function Login({ setToken }) {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
-
+    const [show, setshow] = useState(false);
     const handleSubmit = async e => {
         e.preventDefault();
         const token = await loginUser({
@@ -62,8 +62,32 @@ export default function Login({ setToken }) {
                     </label>
                     <label>
                         <p>Password</p>
-                        <input type="password" onChange={e => setPassword(e.target.value)} />
+                        <input type={show ? "text" : "password"} onChange={e => setPassword(e.target.value)} />
+
                     </label>
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        marginTop: '-35px',
+
+                    }}>
+
+
+                        <IconButton
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={() => setshow(!show)}>
+
+                            {
+                                show ?
+                                    <i class="far fa-eye"></i>
+                                    :
+                                    <i class="fas fa-eye-slash"></i>
+                            }
+
+                        </IconButton>
+                    </div>
                     <div>
 
                         <Button
