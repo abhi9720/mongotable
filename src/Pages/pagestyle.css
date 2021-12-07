@@ -1,0 +1,23 @@
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    
+    
+}
+.input_container{
+    margin-top: 40px;
+    width: 400px;
+    height: fit-content;
+    background-color: lightblue;
+    box-sizing: border-box;
+    padding: 20px 50px;
+}
+.input_container input{
+    width: 80%;
+    border-radius: 6px;
+    padding: 6px;
+    outline: none;
+    border: none;
+}

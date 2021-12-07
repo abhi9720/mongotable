@@ -87,7 +87,11 @@ class SessionTable extends React.Component {
         })
 
         console.log(this.state.fetchedData)
-        axiosInstance.get('/sessions/findall').then(res => {
+        axiosInstance.get('/admin/sessions/findall', {
+            headers: {
+                "Authorization": `Bearer ${(localStorage.getItem('wizegridAdminToken') !== null) ? JSON.parse(localStorage.getItem('wizegridAdminToken')) : null}`
+            }
+        }).then(res => {
             const sessionData = res.data;
 
             this.setState({ fetchedData: sessionData })
@@ -163,13 +167,22 @@ class SessionTable extends React.Component {
                                 dataUpdate[index] = newData;
                                 this.setState({ fetchedData: dataUpdate })
 
-                                axiosInstance.post('/session/' + oldData._id, newData)
+                                axiosInstance.post('/admin/session/' + oldData._id, newData, {
+                                    headers: {
+                                        "Authorization": `Bearer ${(localStorage.getItem('wizegridAdminToken') !== null) ? JSON.parse(localStorage.getItem('wizegridAdminToken')) : null}`
+                                    }
+                                })
                                     .then(res => {
                                         this.setState({ fetchedData: dataUpdate })
                                         this.success()
                                         resolve();
                                     })
                                     .catch(err => {
+                                        if (parseInt(err.response.status) === 401) {
+                                            console.log('removing token ');
+                                            window.localStorage.removeItem('wizegridAdminToken')
+                                            window.location.href = "/"
+                                        }
                                         console.log(err);
                                         this.error();
                                         reject()

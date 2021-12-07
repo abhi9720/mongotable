@@ -80,7 +80,11 @@ class UserTable extends React.Component {
         })
 
         console.log(this.state.fetchedData)
-        axiosInstance.get('/user/findall').then(res => {
+        axiosInstance.get('/admin/user/findall', {
+            headers: {
+                "Authorization": `Bearer ${(localStorage.getItem('wizegridAdminToken') !== null) ? JSON.parse(localStorage.getItem('wizegridAdminToken')) : null}`
+            }
+        }).then(res => {
             const user = res.data;
             this.setState({ fetchedData: user })
         })
@@ -155,14 +159,26 @@ class UserTable extends React.Component {
                                 dataUpdate[index] = newData;
 
 
-                                axiosInstance.post('/user/' + oldData._id, newData)
+                                axiosInstance.post('/admin/user/' + oldData._id, newData, {
+                                    headers: {
+                                        "Authorization": `Bearer ${(localStorage.getItem('wizegridAdminToken') !== null) ? JSON.parse(localStorage.getItem('wizegridAdminToken')) : null}`
+                                    }
+                                })
                                     .then(res => {
+
+
+                                        console.log(res);
                                         this.setState({ fetchedData: dataUpdate })
                                         this.success()
                                         resolve();
                                     })
                                     .catch(err => {
-                                        console.log(err);
+
+                                        if (parseInt(err.response.status) === 401) {
+
+                                            window.localStorage.removeItem('wizegridAdminToken')
+                                            window.location.href = "/"
+                                        }
                                         this.error();
                                         reject()
                                     })
