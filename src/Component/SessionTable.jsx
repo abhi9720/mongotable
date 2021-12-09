@@ -76,8 +76,8 @@ class SessionTable extends React.Component {
 
                 },
                 {
-                    title: "sendPayment",
-                    field: "payment_id: ",
+                    title: "Due Date",
+                    field: "payementDueDate: ",
                 },
             ],
             tableIcons: {
