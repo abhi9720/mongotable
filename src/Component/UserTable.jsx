@@ -6,8 +6,9 @@ import Edit from '@material-ui/icons/Edit';
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import { Link } from '@material-ui/core';
 import axiosInstance from '../util/axiosConfig'
-
+import { FRONTEND_URL } from '../constant';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 
 
@@ -21,22 +22,19 @@ class UserTable extends React.Component {
     componentDidMount() {
         this.setState({
             columns: [
-                // {
-                //     title: "ID", field: "_id", editable: false, filtering: false,
-                //     width: "3%",
-                // },
                 {
-                    title: "Created", field: "createdAt", editable: false,
-                    render: (rowData) => {
-                        return <div>{new Date(rowData?.createdAt).toLocaleDateString()}</div>
-                    }
-
+                    title: "ID", field: "_id", editable: false, filtering: false,
+                    width: "3%",
                 },
                 {
-                    title: "Name", field: "name",
+                    title: "Created", field: "createdAt", editable: false,
+                    render: rowData => moment(rowData?.createdAt).format('DD/MM/YYYY')
+                },
+                {
+                    title: "Name", field: "firstname",
                     editable: false,
                     render: rowData => {
-                        return <Link target="_blank" href={'https://localhost:9000' + rowData._id}>
+                        return <Link target="_blank" href={FRONTEND_URL + "profile/view/" + rowData._id}>
                             {rowData.firstname + " " + rowData.lastname}
                         </Link>
                     },
@@ -61,8 +59,9 @@ class UserTable extends React.Component {
                     lookup: {
                         'underVerification': 'under verification',
                         'verifiedRestricted': 'verified Restricted',
-                        'fullVerified': 'full verified',
-                        'suspended': 'Suspended'
+                        'verifiedFullAccess': 'full verified',
+                        'suspendedPre': 'Suspended Pre-verification',
+                        'suspendedPost': 'Suspended Post-verification'
                     }
                 }, {
                     title: "Exp. Edit Alert",
@@ -79,7 +78,7 @@ class UserTable extends React.Component {
             }
         })
 
-        console.log(this.state.fetchedData)
+
         axiosInstance.get('/admin/user/findall', {
             headers: {
                 "Authorization": `Bearer ${(localStorage.getItem('wizegridAdminToken') !== null) ? JSON.parse(localStorage.getItem('wizegridAdminToken')) : null}`
@@ -88,6 +87,13 @@ class UserTable extends React.Component {
             const user = res.data;
             this.setState({ fetchedData: user })
         })
+            .catch(err => {
+                if (parseInt(err.response?.status) === 403) {
+                    window.localStorage.removeItem('wizegridAdminToken')
+                    window.location.href = "/"
+                }
+
+            })
     }
 
     // Helper function
@@ -135,7 +141,7 @@ class UserTable extends React.Component {
                         paging: true,
                         pageSize: 10,
                         pageSizeOptions: [10, 20, 50, 100, this.state?.fetchedData?.length],
-                        selection: true,
+                        // selection: true,
                         filtering: true,
                         grouping: true,
                         searching: true,
@@ -153,13 +159,17 @@ class UserTable extends React.Component {
 
                         onRowUpdate: (newData, oldData) => {
                             return new Promise(async (resolve, reject) => {
+
+
+                                const url = '/admin/user/' + oldData._id + `/?prev=${oldData?.profile_status}&new=${newData.profile_status}`
+
                                 const dataUpdate = [...this.state.fetchedData];
                                 const target = dataUpdate.find((el) => el._id === oldData.tableData._id);
                                 const index = dataUpdate.indexOf(target);
                                 dataUpdate[index] = newData;
+                                console.log(newData);
 
-
-                                axiosInstance.post('/admin/user/' + oldData._id, newData, {
+                                axiosInstance.post(url, newData, {
                                     headers: {
                                         "Authorization": `Bearer ${(localStorage.getItem('wizegridAdminToken') !== null) ? JSON.parse(localStorage.getItem('wizegridAdminToken')) : null}`
                                     }
@@ -167,14 +177,14 @@ class UserTable extends React.Component {
                                     .then(res => {
 
 
-                                        console.log(res);
+
                                         this.setState({ fetchedData: dataUpdate })
                                         this.success()
                                         resolve();
                                     })
                                     .catch(err => {
 
-                                        if (parseInt(err.response.status) === 401) {
+                                        if (parseInt(err.response?.status) === 401) {
 
                                             window.localStorage.removeItem('wizegridAdminToken')
                                             window.location.href = "/"

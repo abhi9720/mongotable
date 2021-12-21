@@ -15,6 +15,9 @@ async function loginUser(credentials) {
     console.log(userlogindata);
     try {
         const res = await axiosInstance.post('/auth/login', userlogindata)
+        if (!res.data) {
+            throw "Invalid Admin"
+        }
 
         if (res.data?.user?.internaladmin) {
             return (res.data.jwt);
@@ -81,9 +84,9 @@ export default function Login({ setToken }) {
 
                             {
                                 show ?
-                                    <i class="far fa-eye"></i>
+                                    <i className="far fa-eye"></i>
                                     :
-                                    <i class="fas fa-eye-slash"></i>
+                                    <i className="fas fa-eye-slash"></i>
                             }
 
                         </IconButton>

@@ -123,7 +123,7 @@ class ConfigTable extends React.Component {
                                         resolve();
                                     })
                                     .catch(err => {
-                                        if (parseInt(err.response.status) === 401) {
+                                        if (parseInt(err.response?.status) === 401) {
                                             console.log('removing token ');
                                             window.localStorage.removeItem('wizegridAdminToken')
                                             window.location.href = "/"

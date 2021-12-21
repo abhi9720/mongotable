@@ -5,7 +5,7 @@ export default function useToken() {
         const tokenString = localStorage.getItem('wizegridAdminToken');
 
         const userToken = JSON.parse(tokenString);
-        console.log(userToken);
+
         return userToken
     };
 

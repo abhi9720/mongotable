@@ -3,6 +3,11 @@ import React from 'react';
 import MaterialTable from '@material-table/core';
 import Edit from '@material-ui/icons/Edit';
 
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
+import moment from 'moment'
+
+
 import { ExportCsv, ExportPdf } from '@material-table/exporters';
 import axiosInstance from '../util/axiosConfig'
 
@@ -27,73 +32,76 @@ class SessionTable extends React.Component {
                 },
                 {
                     title: "Created", field: "createdAt", editable: false,
-                    render: (rowData) => {
-                        return <div>{new Date(rowData?.createdAt).toLocaleDateString()}</div>
-                    }
+                    render: rowData => moment(rowData?.createdAt).format('DD/MM/YYYY')
+
+
 
                 },
                 {
                     title: "Action Date", field: 'updatedAt', editable: false,
-                    render: (rowData) => {
-                        return <div>{new Date(rowData?.updatedAt).toLocaleDateString()}</div>
-                    }
+                    render: rowData => moment(rowData?.updatedAt).format('DD/MM/YYYY')
+
                 },
                 {
                     title: "Seeker", field: "from.firstname", editable: false,
-                    render: (rowData) => {
-                        return <div>{rowData.from?.firstname + " " + rowData.from?.lastname}</div>
+
+                    render: function (data, type, row) {
+                        return data.from?.firstname + ' ' + data.from?.lastname;
                     }
+                    // render: (rowData) => {
+                    //     return <div>{rowData.from?.firstname + " " + rowData.from?.lastname}</div>
+                    // }
                 },
                 {
                     title: "Advisor", field: "to.firstname", editable: false,
-                    render: (rowData) => {
-                        console.log(rowData);
-                        return <div>{rowData.to?.firstname + " " + rowData.to?.lastname}</div>
+
+                    render: function (data, type, row) {
+                        return data.to?.firstname + ' ' + data.to?.lastname
                     }
                 },
                 {
                     title: "Payment",
-                    field: "rowData.transaction.amount.amount",
+                    field: "transaction.amount.amount",
                     editable: false,
-                    render: (rowData) => {
-                        return <div>
-                            {rowData.transaction?.amount.amount / 100}
-                        </div>
+                    render: function (data, type, row) {
+                        return data.transaction?.amount.amount / 100
                     }
                 },
-
                 {
                     title: "Current State", field: "status",
                     lookup: {
-                        'requested': "requested",
-                        "declined": "declined",
-                        "approved": "approved",
-                        "cancelled": "cancelled"
-
-
-
+                        'completed': "Completed",
+                        'abandoned': "Abandoned",
+                        'declined': "Declined",
+                        'approved': "Approved",
+                        'cancelled': "Cancelled"
                     }
-
                 },
                 {
                     title: "Due Date",
-                    field: "payementDueDate: ",
+                    field: "dueDate",
+                    editable: false,
+
+
+                    render: rowData => String(moment(rowData.dueDate).format('DD/MM/YYYY'))
+
+
+
+
                 },
             ],
             tableIcons: {
                 Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-                // Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
             }
         })
 
-        console.log(this.state.fetchedData)
+
         axiosInstance.get('/admin/sessions/findall', {
             headers: {
                 "Authorization": `Bearer ${(localStorage.getItem('wizegridAdminToken') !== null) ? JSON.parse(localStorage.getItem('wizegridAdminToken')) : null}`
             }
         }).then(res => {
             const sessionData = res.data;
-
             this.setState({ fetchedData: sessionData })
         })
     }
@@ -103,7 +111,7 @@ class SessionTable extends React.Component {
         this.componentDidMount()
     };
 
-    success = () => toast.success('Update successfully', {
+    success = () => toast.success('Update Successfully', {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -130,9 +138,44 @@ class SessionTable extends React.Component {
                 <MaterialTable
                     data={this.state.fetchedData}
                     columns={this.state.columns}
+                    actions={[
+                        rowData => ({
+                            disabled: rowData.status === 'completed' || rowData.status !== 'approved',
+                            icon: () =>
+                                rowData.status === 'completed' ? <DoneAllIcon /> :
+                                    <CheckCircleIcon />,
+                            tooltip: rowData.status === 'completed' ? "Payment Done" : "Mark Payment Done",
+
+                            onClick: (event, rowData) => {
+                                console.log(event);
+                                axiosInstance.post("/admin/sessions/markpaid/" + rowData._id, {
+                                    headers: {
+                                        "Authorization": `Bearer ${(localStorage.getItem('wizegridAdminToken') !== null) ? JSON.parse(localStorage.getItem('wizegridAdminToken')) : null} `
+                                    }
+                                }).then(res => {
+
+
+                                    const dataUpdate = [...this.state.fetchedData];
+                                    const target = dataUpdate.find((el) => el._id === rowData._id);
+                                    const index = dataUpdate.indexOf(target);
+                                    dataUpdate[index].status = "completed";
+                                    this.setState({ fetchedData: dataUpdate })
+                                    this.success();
+                                })
+                                    .catch(err => {
+                                        this.error();
+                                        console.dir(err);
+                                    })
+
+                            }
+
+                        })
+                    ]}
+
+
+
                     title={"Manage User"}
                     options={{
-                        // ...
                         exportMenu: [{
                             label: 'Export PDF',
                             exportFunc: (cols, datas) => ExportPdf(cols, datas, 'sesssion')
@@ -143,7 +186,6 @@ class SessionTable extends React.Component {
                         paging: true,
                         pageSize: 10,
                         pageSizeOptions: [10, 20, 50, 100, this.state?.fetchedData?.length],
-                        selection: true,
                         filtering: true,
                         grouping: true,
                         searching: true,
@@ -165,11 +207,11 @@ class SessionTable extends React.Component {
                                 const target = dataUpdate.find((el) => el._id === oldData.tableData._id);
                                 const index = dataUpdate.indexOf(target);
                                 dataUpdate[index] = newData;
-                                this.setState({ fetchedData: dataUpdate })
+
 
                                 axiosInstance.post('/admin/session/' + oldData._id, newData, {
                                     headers: {
-                                        "Authorization": `Bearer ${(localStorage.getItem('wizegridAdminToken') !== null) ? JSON.parse(localStorage.getItem('wizegridAdminToken')) : null}`
+                                        "Authorization": `Bearer ${(localStorage.getItem('wizegridAdminToken') !== null) ? JSON.parse(localStorage.getItem('wizegridAdminToken')) : null} `
                                     }
                                 })
                                     .then(res => {
@@ -178,7 +220,7 @@ class SessionTable extends React.Component {
                                         resolve();
                                     })
                                     .catch(err => {
-                                        if (parseInt(err.response.status) === 401) {
+                                        if (parseInt(err.response?.status) === 401) {
                                             console.log('removing token ');
                                             window.localStorage.removeItem('wizegridAdminToken')
                                             window.location.href = "/"
