@@ -16,7 +16,7 @@ async function loginUser(credentials) {
     try {
         const res = await axiosInstance.post('/auth/login', userlogindata)
         if (!res.data) {
-            throw "Invalid Admin"
+            throw new Error("Invalid Admin")
         }
 
         if (res.data?.user?.internaladmin) {

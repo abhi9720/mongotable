@@ -1,9 +1,9 @@
 import { Button } from '@material-ui/core';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
+
 import './sidebar.css'
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
-import axiosInstance from '../util/axiosConfig'
+
 
 
 
