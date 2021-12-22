@@ -111,8 +111,14 @@ class ConfigTable extends React.Component {
                                 const index = dataUpdate.indexOf(target);
                                 dataUpdate[index] = newData;
 
+                                const url = "/admin/edit-env"
 
-                                axiosInstance.post("/admin/edit-env/" + newData.key + "/" + newData.value, {
+                                const data = {
+                                    key: newData.key,
+                                    value: newData.value
+                                }
+
+                                axiosInstance.post(url, data, {
                                     headers: {
                                         "Authorization": `Bearer ${(localStorage.getItem('wizegridAdminToken') !== null) ? JSON.parse(localStorage.getItem('wizegridAdminToken')) : null}`
                                     }

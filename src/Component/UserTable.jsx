@@ -65,10 +65,10 @@ class UserTable extends React.Component {
                     }
                 }, {
                     title: "Exp. Edit Alert",
-                    field: "expEditAlert",
+                    field: "isExpEdited",
                     lookup: {
-                        0: 'Experince Edited',
-                        1: 'mark verified'
+                        true: 'Experience Edited',
+                        false: 'verified'
                     }
                 },
             ],
