@@ -37,7 +37,7 @@ class Sidebar extends React.Component {
 
 
     getUserList = () => {
-        return fetch('http://localhost:5000/api/v1/admin/duepayments')
+        return fetch(`${BACKEND_URL}/admin/duepayments`)
             .then(res => res.json()).then(jsondata => {
 
                 let MappedData = jsondata.map(session => {
