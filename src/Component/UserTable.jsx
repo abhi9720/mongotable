@@ -131,6 +131,8 @@ class UserTable extends React.Component {
                     title={"Manage User"}
                     options={{
                         // ...
+
+
                         exportMenu: [{
                             label: 'Export PDF',
                             exportFunc: (cols, datas) => ExportPdf(cols, datas, 'user')

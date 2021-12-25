@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import React from 'react';
 import MaterialTable from '@material-table/core';
 import Edit from '@material-ui/icons/Edit';
-
+import './sidebar.css'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import moment from 'moment'
@@ -138,6 +138,37 @@ class SessionTable extends React.Component {
                 <MaterialTable
                     data={this.state.fetchedData}
                     columns={this.state.columns}
+
+                    detailPanel={rowData => {
+                        const data = rowData.rowData.AmountPaid
+                        console.log(rowData)
+                        console.log(data)
+                        return (
+
+                            <div style={{ padding: "50px", backgroundColor: "#e8eaf5" }} >
+
+                                <table>
+                                    <tr>
+                                        <th>Session Booked Fee</th>
+                                        <th>NetAmount</th>
+                                        <th>charityAmount</th>
+                                        <th>WizegridCommission</th>
+                                        <th>PaymentProcessorFee</th>
+                                    </tr>
+                                    <tr>
+                                        <th>{rowData.rowData.transaction?.amount?.amount / 100 || null}</th>
+                                        <th>{data.NetAmount || null}</th>
+                                        <th>{data.charityAmount}</th>
+                                        <th>{data.WizegridCommission || null}</th>
+                                        <th>{data.PaymentProcessorFee || null}</th>
+
+                                    </tr>
+                                </table>
+
+
+                            </div>
+                        )
+                    }}
                     actions={[
                         rowData => ({
                             disabled: rowData.status === 'completed' || rowData.status !== 'approved',

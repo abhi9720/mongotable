@@ -75,6 +75,9 @@ class ConfigTable extends React.Component {
         return (
             <>
                 <MaterialTable
+                    style={{
+                        padding: "0px 40px"
+                    }}
                     data={this.state.fetchedData}
                     columns={this.state.columns}
                     title={"Manage User"}
