@@ -1,6 +1,6 @@
 import React from 'react';
 import Sidebar from './Component/Sidebar';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory, BrowserRouter } from 'react-router-dom';
 
 
 import Manageuser from './Pages/ManageUser';
@@ -13,20 +13,19 @@ import useToken from './useToken';
 import EditProfile from './Component/EditProfile';
 
 function App() {
-
+  const history = useHistory()
   const { token, setToken } = useToken();
   if (!token) {
     return <Login setToken={setToken} />
   }
   else {
-
-
+    history?.push('/manageusers')
   }
   return (
-    <BrowserRouter>
 
-      <div className='Container' style={{
-        padding: '5px'
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <div className="Container" style={{
+        padding: "5px"
       }}>
         <Sidebar />
         <Switch>
@@ -37,8 +36,8 @@ function App() {
           <Route exact path='*' component={ERROR404} />
         </Switch>
       </div>
+    </BrowserRouter >
 
-    </BrowserRouter>
   );
 }
 

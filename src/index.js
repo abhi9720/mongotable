@@ -22,6 +22,7 @@ ReactDOM.render(
       draggable
       pauseOnHover
     />
+
     <App />
     <ToastContainer />
   </React.StrictMode>
