@@ -14,17 +14,9 @@ const ERROR404 = () => {
                 flexDirection: "column",
             }}
         >
-            <img src={"https://raw.githubusercontent.com/abhi9720/postgram/master/client/public/assets/404.png"} alt="page not found" />
-            <Button
-                variant="contained"
-                color="secondary"
-                size="large"
-                style={{ position: "absolute", top: "80%" }}
-                onClick={() => history.push("/")}
-            >
-                BACK TO SAFTY
-            </Button>
-        </div>
+
+
+        </div >
     );
 };
 

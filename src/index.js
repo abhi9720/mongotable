@@ -8,7 +8,9 @@ import { ToastContainer } from 'react-toastify';
 
 
 ReactDOM.render(
-  <BrowserRouter>
+
+
+  <React.StrictMode>
     <ToastContainer
       position="bottom-left"
       autoClose={5000}
@@ -20,10 +22,10 @@ ReactDOM.render(
       draggable
       pauseOnHover
     />
-    <HashRouter>
-      <App />
-    </HashRouter>
+    <App />
     <ToastContainer />
-  </BrowserRouter>,
+  </React.StrictMode>
+  ,
+
   document.getElementById('root')
 );

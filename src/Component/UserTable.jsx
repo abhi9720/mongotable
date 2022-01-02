@@ -25,6 +25,11 @@ class UserTable extends React.Component {
                 {
                     title: "ID", field: "_id", editable: false, filtering: false,
                     width: "3%",
+                    render: rowData => {
+                        return <Link target="_blank" href={"/profile/" + rowData._id}>
+                            {rowData._id}
+                        </Link>
+                    },
                 },
                 {
                     title: "Created", field: "createdAt", editable: false,

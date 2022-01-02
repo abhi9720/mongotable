@@ -1,0 +1,52 @@
+.expcard{
+    
+    border: 1px solid #000000de;
+    padding: 10px 20px;
+    display: flex;
+    align-items: flex-start;
+    
+    
+}
+.data{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex:0.9
+}
+.company{
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.designation{
+ font-size: 14px;   
+}
+
+.team{
+
+    display: flex;
+    gap: 20px;
+}
+.tag{
+background-color: rgba(137, 43, 226, 0.105);
+color: black;
+border-radius: 10px;
+padding: 5px 10px;
+font-size: 12px;
+}
+
+.date{
+    margin-top: 10px;
+display: flex;
+gap: 10px;
+}
+
+.from,.to{
+    padding: 2px;
+    background-color: aliceblue;
+}
+
+button[type="Submit"]{
+    margin-right: 20px;
+}
+

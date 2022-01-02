@@ -205,7 +205,7 @@ class SessionTable extends React.Component {
 
 
 
-                    title={"Manage User"}
+                    title={"Manage Sessions"}
                     options={{
                         exportMenu: [{
                             label: 'Export PDF',

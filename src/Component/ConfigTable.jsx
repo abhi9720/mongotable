@@ -80,7 +80,7 @@ class ConfigTable extends React.Component {
                     }}
                     data={this.state.fetchedData}
                     columns={this.state.columns}
-                    title={"Manage User"}
+                    title={"Manage Environment Variable"}
                     options={{
                         // ...
                         exportMenu: [{
