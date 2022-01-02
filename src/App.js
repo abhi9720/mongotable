@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from './Component/Sidebar';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { useHistory } from "react-router";
+
 
 import Manageuser from './Pages/ManageUser';
 import ManageSession from './Pages/ManageSession';
@@ -13,7 +13,7 @@ import useToken from './useToken';
 import EditProfile from './Component/EditProfile';
 
 function App() {
-  const router = useHistory();
+
   const { token, setToken } = useToken();
   if (!token) {
     return <Login setToken={setToken} />

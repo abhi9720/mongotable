@@ -1,7 +1,6 @@
 import { Button } from "@material-ui/core";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+
 
 const initialState = {
     function_name: "",
@@ -24,15 +23,6 @@ export default function AddExp({ exp, addDataToBackend }) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
 
 
-    const success = (text) => toast.success(text, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-    });
 
 
     const submitForm = (e) => {
