@@ -1,5 +1,5 @@
-import { Button } from '@material-ui/core';
-import React, { useEffect, useState } from 'react'
+
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import AddExp from './AddExp';
 import axiosInstance from '../util/axiosConfig';
@@ -20,7 +20,7 @@ export default function EditProfile() {
     const pram = useParams();
     const id = pram?.id
     const [profile, setprofile] = useState(initialState);
-    const [index, setIndex] = useState(-1);
+
 
     const onChange = (e) =>
         setprofile({ ...profile, [e.target.name]: e.target.value });
@@ -36,7 +36,7 @@ export default function EditProfile() {
         })
             .then(res => {
                 console.log("get data back");
-                console.log(res.data);
+
                 setprofile(res.data)
                 // return res;
             })
@@ -149,7 +149,7 @@ export default function EditProfile() {
                         />
                     </div>
 
-                    <AddExp exp={profile?.past_experiences} addDataToBackend={submitData} idx={index} />
+                    <AddExp exp={profile?.past_experiences} addDataToBackend={submitData} />
 
                     <input
                         type="Submit"
