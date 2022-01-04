@@ -23,7 +23,8 @@ function App() {
   }
   return (
 
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter history={window.history}>
+    
       <div className="Container" style={{
         padding: "5px"
       }}>
