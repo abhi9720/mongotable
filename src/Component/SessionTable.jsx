@@ -31,6 +31,13 @@ class SessionTable extends React.Component {
 
                 },
                 {
+                    title: "Receipt Id", field: "AmountPaid?.ReceiptId",
+                    editable: false,
+                    render: rowData => rowData.AmountPaid?.ReceiptId
+
+
+                },
+                {
                     title: "Created", field: "createdAt", editable: false,
                     render: rowData => moment(rowData?.createdAt).format('DD/MM/YYYY')
 
@@ -74,18 +81,20 @@ class SessionTable extends React.Component {
                         'abandoned': "Abandoned",
                         'declined': "Declined",
                         'approved': "Approved",
-                        'cancelled': "Cancelled"
+                        'cancelled': "Cancelled",
+                        "requested": "Requested"
                     }
                 },
                 {
                     title: "Due Date",
                     field: "dueDate",
                     editable: false,
-
-
                     render: rowData => String(moment(rowData.dueDate).format('DD/MM/YYYY'))
-
-
+                },
+                {
+                    title: "Payment Date", field: "AmountPaid?.paymentDate",
+                    editable: false,
+                    render: rowData => (rowData.AmountPaid?.paymentDate && moment(rowData.AmountPaid?.paymentDate).format('DD/MM/YYYY')) || "-"
 
 
                 },
@@ -147,8 +156,15 @@ class SessionTable extends React.Component {
 
                             <div style={{ padding: "50px", backgroundColor: "#e8eaf5" }} >
 
+                                <h4>
+                                    Payment Date :
+
+                                    {(data.paymentDate && String(moment(data.paymentDate).format('DD/MM/YYYY'))) || "Not Done"}
+                                </h4>
+
                                 <table>
                                     <tr>
+                                        <th>Receipt Id </th>
                                         <th>Session Booked Fee</th>
                                         <th>NetAmount</th>
                                         <th>charityAmount</th>
@@ -156,12 +172,12 @@ class SessionTable extends React.Component {
                                         <th>PaymentProcessorFee</th>
                                     </tr>
                                     <tr>
+                                        <th>{data.ReceiptId || null}</th>
                                         <th>{rowData.rowData.transaction?.amount?.amount / 100 || null}</th>
                                         <th>{data.NetAmount || null}</th>
                                         <th>{data.charityAmount}</th>
                                         <th>{data.WizegridCommission || null}</th>
                                         <th>{data.PaymentProcessorFee || null}</th>
-
                                     </tr>
                                 </table>
 
