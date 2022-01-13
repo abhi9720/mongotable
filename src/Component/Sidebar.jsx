@@ -47,7 +47,7 @@ class Sidebar extends React.Component {
                         name: session.to?.firstname + " " + session.to?.lastname,
                         accountno: session.to?.bank_account?.account_number || 'N/A',
                         ifsc: session.to?.bank_account?.ifsc_code || 'N/A',
-                        amount: session.transaction?.amount?.amount / 100
+                        amount: session.transaction?.amount?.amount
                     }
                 })
 

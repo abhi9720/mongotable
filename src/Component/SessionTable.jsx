@@ -71,7 +71,7 @@ class SessionTable extends React.Component {
                     field: "transaction.amount.amount",
                     editable: false,
                     render: function (data, type, row) {
-                        return data.transaction?.amount.amount / 100
+                        return data.transaction?.amount.amount
                     }
                 },
                 {
@@ -173,7 +173,7 @@ class SessionTable extends React.Component {
                                     </tr>
                                     <tr>
                                         <th>{data.ReceiptId || null}</th>
-                                        <th>{rowData.rowData.transaction?.amount?.amount / 100 || null}</th>
+                                        <th>{rowData.rowData.transaction?.amount?.amount || null}</th>
                                         <th>{data.NetAmount || null}</th>
                                         <th>{data.charityAmount}</th>
                                         <th>{data.WizegridCommission || null}</th>
