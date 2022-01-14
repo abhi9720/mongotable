@@ -31,9 +31,9 @@ class SessionTable extends React.Component {
 
                 },
                 {
-                    title: "Receipt Id", field: "AmountPaid?.ReceiptId",
+                    title: "Receipt Id", field: "AmountPaid?.RECEIPTID",
                     editable: false,
-                    render: rowData => rowData.AmountPaid?.ReceiptId
+                    render: rowData => rowData.AmountPaid?.RECEIPTID
 
 
                 },
@@ -75,6 +75,14 @@ class SessionTable extends React.Component {
                     }
                 },
                 {
+                    title: "Payment Mode",
+                    field: "transaction?.PAYMENTMODE",
+                    editable: false,
+                    render: function (data) {
+                        return data.transaction?.PAYMENTMODE
+                    }
+                },
+                {
                     title: "Current State", field: "status",
                     lookup: {
                         'completed': "Completed",
@@ -92,9 +100,9 @@ class SessionTable extends React.Component {
                     render: rowData => String(moment(rowData.dueDate).format('DD/MM/YYYY'))
                 },
                 {
-                    title: "Payment Date", field: "AmountPaid?.paymentDate",
+                    title: "Payment Date", field: "AmountPaid?.paymentdate",
                     editable: false,
-                    render: rowData => (rowData.AmountPaid?.paymentDate && moment(rowData.AmountPaid?.paymentDate).format('DD/MM/YYYY')) || "-"
+                    render: rowData => (rowData.AmountPaid?.paymentdate && moment(rowData.AmountPaid?.paymentdate).format('DD/MM/YYYY')) || "-"
 
 
                 },
@@ -159,20 +167,23 @@ class SessionTable extends React.Component {
                                 <h4>
                                     Payment Date :
 
-                                    {(data.paymentDate && String(moment(data.paymentDate).format('DD/MM/YYYY'))) || "Not Done"}
+                                    {(data.paymentdate && String(moment(data.paymentdate).format('DD/MM/YYYY'))) || "Not Done"}
                                 </h4>
 
                                 <table>
                                     <tr>
                                         <th>Receipt Id </th>
+                                        <th>Payment Mode</th>
                                         <th>Session Booked Fee</th>
                                         <th>NetAmount</th>
                                         <th>charityAmount</th>
                                         <th>WizegridCommission</th>
                                         <th>PaymentProcessorFee</th>
+
                                     </tr>
                                     <tr>
-                                        <th>{data.ReceiptId || null}</th>
+                                        <th>{data.RECEIPTID || null}</th>
+                                        <th>{rowData.rowData.transaction?.PAYMENTMODE || null}</th>
                                         <th>{rowData.rowData.transaction?.amount?.amount || null}</th>
                                         <th>{data.NetAmount || null}</th>
                                         <th>{data.charityAmount}</th>
